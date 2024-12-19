@@ -1,0 +1,106 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <h3 style="text-align: center">Registration Form</h3>
+  <label for="name">Name</label>
+  <input id="name" formControlName="name" type="text" />
+  <div *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+    Name is required and should contain only letters.
+  </div>
+
+  <label for="email">Email</label>
+  <input id="email" formControlName="email" type="email" />
+  <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+    Enter a valid email.
+  </div>
+
+  <label for="password">Password</label>
+  <input id="password" formControlName="password" type="password" />
+  <div
+    *ngIf="
+      userForm.get('password')?.invalid && userForm.get('password')?.touched
+    "
+  >
+    Password must be between 12-20 characters and contain symbols, numbers, and
+    letters.
+  </div>
+
+  <label for="contact">Contact</label>
+  <input id="contact" formControlName="contact" type="number" />
+  <div
+    *ngIf="userForm.get('contact')?.invalid && userForm.get('contact')?.touched"
+  >
+    Contact must be a 10-digit number.
+  </div>
+
+  <label>Educational Detail</label>
+  <div formArrayName="skills">
+    <div *ngFor="let skill of skillsControls; let i = index">
+      <input [formControlName]="i" type="text" placeholder="Enter Skill" />
+    </div>
+    <div *ngIf="userForm.get('skills')?.invalid && userForm.get('skills')?.touched">
+      Skill is required and should contain letters,#,+.
+    </div>
+    <button type="button" (click)="addSkill()" style="margin-left: 80%">
+      Add Skill
+    </button>
+  </div>
+
+  <div formArrayName="addresses">
+    <div *ngFor="let address of addressControls; let i = index">
+      <fieldset [formGroupName]="i">
+        <legend style="color: black; font-size: medium">
+          {{ address.value.addressType }}
+        </legend>
+        <label for="street">Street</label>
+        <input formControlName="street" />
+        <div
+          *ngIf="
+            address.get('street')?.invalid && address.get('street')?.touched
+          "
+        >
+          Street is required.
+        </div>
+
+        <label for="city">City</label>
+        <input formControlName="city" />
+        <div
+          *ngIf="address.get('city')?.invalid && address.get('city')?.touched"
+        >
+          City is required.
+        </div>
+
+        <label for="state">State</label>
+        <input formControlName="state" />
+        <div
+          *ngIf="address.get('state')?.invalid && address.get('state')?.touched"
+        >
+          State is required.
+        </div>
+
+        <label for="country">Country</label>
+        <input formControlName="country" />
+        <div
+          *ngIf="
+            address.get('country')?.invalid && address.get('country')?.touched
+          "
+        >
+          Country is required.
+        </div>
+
+        <label for="pinCode">Pin Code</label>
+        <input formControlName="pinCode" />
+        <div
+          *ngIf="
+            address.get('pinCode')?.invalid && address.get('pinCode')?.touched
+          "
+        >
+          Pin Code should be a 6-digit number.
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-evenly;">
+    <button type="submit" [disabled]="userForm.invalid">Submit</button>
+    <button class="reset" type="button" (click)="reset()">Reset</button>
+  </div>
+</form>
